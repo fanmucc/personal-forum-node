@@ -20,7 +20,9 @@
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^8.0.8",
     "koa-session2": "^2.2.10",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.13"
   },
   "devDependencies": {
     "node-dev": "^4.0.0",

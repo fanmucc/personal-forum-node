@@ -1,13 +1,17 @@
 const devConfig = {
-    host: '47.56.134.154',
+    host: '127.0.0.1',
     database: 'blog',
     user: 'root',
-    password: '!QAZxsw2',
+    password: 'WANGhui.123',
+    dialect: 'mysql',
     port: 3306
 }
 const prodConfig = {
-    host: '***.***.***',
+    host: '47.56.134.154',
+    user: 'root',
+    password: '!QAZxsw2',
     database: 'blog',
+    dialect: 'mysql',
     port: 3306
 }
 

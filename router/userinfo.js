@@ -1,5 +1,8 @@
 const router = require('koa-router')()
-
+const db =  require('sequelize')
+const sequelize = require('../model')
+const users = require('../model/models/users')
+const { Model } = require('sequelize')
 router.post('/login', function (ctx, next) {
     const url = ctx.url // 请求的url
     const method = ctx.method   // 请求的方法
@@ -7,7 +10,16 @@ router.post('/login', function (ctx, next) {
     const post = ctx.request.body;
     const querystring = ctx.querystring // url字符串格式的请求参数
     ctx.response.status = 200;
-    // ctx.cookies.set('token', '12345678910tokens', {maxAge: 20000})
+    ctx.cookies.set('token', '12345678910tokens', {maxAge: 20000})
+    const uesr = users(db, sequelize, 'users')
+    uesr.sync({
+        force: true
+    });
+    user.findAll().then(res => {
+        console.log(res, '123')
+    }).catch(reg => {
+        console.log(reg)
+    })
     ctx.body = {
         url,
         method,

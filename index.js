@@ -4,7 +4,14 @@ const bodyParser = require('koa-bodyparser');
 const session = require('koa-session2')
 let { sign, verify } = require('jsonwebtoken');
 let app = new Koa;
-require('./model')
+const sequelize = require('./model')
+// sequelize.authenticate().then(() => {
+//     console.log('Connection has been established successfully.123');
+//   })
+//   .catch(err => {
+//     console.error('Unable to connect to the database:', err);
+//   });
+
 // router
 const userInfo = require('./router/userinfo');
 app.use(bodyParser())
