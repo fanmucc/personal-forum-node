@@ -1,16 +1,9 @@
 const Koa = require('koa');
 const router = require('koa-router')();
 const bodyParser = require('koa-bodyparser');
-const session = require('koa-session2')
-let { sign, verify } = require('jsonwebtoken');
+let jwt = require('jsonwebtoken');
 let app = new Koa;
 const sequelize = require('./model')
-// sequelize.authenticate().then(() => {
-//     console.log('Connection has been established successfully.123');
-//   })
-//   .catch(err => {
-//     console.error('Unable to connect to the database:', err);
-//   });
 
 // router
 const userInfo = require('./router/userinfo');
@@ -26,26 +19,32 @@ const hasOneOf = (str, arr) => {
     return arr.some(item => item.includes(str))
 }
 
-app.use(session({
-    signed:false,
-    maxAge: 20 * 1000
-},app))
 
 app.use((ctx, next) => {
     let method = ctx.request.method.toLowerCase();          // 将请求方式转换成小写
     let path = ctx.request.url;                             // 获取到请求的路径
-    console.log(method, path, '白名单')
-    console.log([method] && hasOneOf(path, whiteListUrl[method]))
     if ([method] && hasOneOf(path, whiteListUrl[method])) next()        // 验证白名单
     else {
         let token;
-        if (ctx.request.headers.authorization == undefined) token = undefined;          // 判断参数authorization携带的参数token, 如果
+        if (ctx.request.headers.authorization == undefined) ctx.response.status(401).send('请进行登录')          // 判断参数authorization携带的参数token, 如果
         else token = ctx.request.headers.authorization;
         console.log(token)
         if (!token) {
             console.log('没有登录，请登录')
         } else {
             console.log('登录了， 开始分析jwtwebtoken')
+            jwt.verify(token, 'YOU', (error, decode) => {
+                if (error) {
+                    ctx.body = {
+                        code: 401,
+                        mes: 'token error',
+                        data: {},
+                        success: false
+                    }
+                } else {
+                    next()
+                }
+            })
         }
     }
 })
